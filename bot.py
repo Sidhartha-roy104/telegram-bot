@@ -2,10 +2,8 @@ import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-# 📍 Set your bot token
 BOT_TOKEN = "7966311975:AAEbrQSjP44HhUQh99rC64ljaKykoWe40IQ"
 
-# ➕ Start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton(f"{i} Sem", callback_data=f"sem_{i}")] for i in range(1, 9)
@@ -15,7 +13,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-# ➕ Handle Semester → Show Exam Type
+
 async def handle_sem(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -32,7 +30,7 @@ async def handle_sem(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-# ➕ Handle Exam Type → Show Timetable Image
+
 async def handle_exam(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -41,8 +39,8 @@ async def handle_exam(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.message.reply_text(f"🔍 Fetching timetable for Sem {sem} - {exam_type}...")
 
-    # 🖼️ Search for matching image
-    folder_path = "timetables"  # Your folder name
+    
+    folder_path = "timetables"  
     image = None
     for ext in ['jpg', 'jpeg', 'png']:
         path = os.path.join(folder_path, f"{sem}_{exam_type}.{ext}")
@@ -56,7 +54,6 @@ async def handle_exam(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.message.reply_text("❌ Timetable not found for this selection.")
 
-# 🚀 Launch Bot
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
@@ -66,5 +63,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# 7966311975:AAEbrQSjP44HhUQh99rC64ljaKykoWe40IQ
